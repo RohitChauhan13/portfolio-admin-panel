@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance configured to talk to our local Express backend
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'http://rohit-portfolio-backend.duckdns.org/api',
   withCredentials: true, // Crucial for sending/receiving session cookies
   headers: {
     'Content-Type': 'application/json',
