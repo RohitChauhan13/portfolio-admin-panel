@@ -324,3 +324,14 @@
     align-items: flex-start;
   }
 }
+
+.custom-flt-bar {
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .custom-flt-bar {
+    margin-left: 0;
+    width: 100%;
+  }
+}

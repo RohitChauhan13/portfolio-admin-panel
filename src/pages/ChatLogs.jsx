@@ -6,59 +6,8 @@ import FormModal from '../components/FormModal';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 import { ModalLoader } from '../components/Loader';
 import ReactMarkdown from 'react-markdown';
-import { Eye, Trash2, CalendarDays, X } from 'lucide-react';
-
-// ─── Date Range Filter ────────────────────────────────────────
-// Inline date-range bar: "From [date] → To [date]" with clear
-const DateRangeFilter = ({ fromDate, toDate, onChange }) => {
-  const hasFilter = fromDate || toDate;
-
-  const handleClear = () => onChange({ from_date: '', to_date: '' });
-
-  return (
-    <div className="chat-date-range">
-      <span className="chat-date-range__icon">
-        <CalendarDays size={15} />
-      </span>
-
-      <div className="chat-date-range__field">
-        <label className="chat-date-range__label">From</label>
-        <input
-          type="date"
-          className="chat-date-range__input"
-          value={fromDate}
-          max={toDate || undefined}
-          onChange={e => onChange({ from_date: e.target.value, to_date: toDate })}
-        />
-      </div>
-
-      <span className="chat-date-range__sep">→</span>
-
-      <div className="chat-date-range__field">
-        <label className="chat-date-range__label">To</label>
-        <input
-          type="date"
-          className="chat-date-range__input"
-          value={toDate}
-          min={fromDate || undefined}
-          onChange={e => onChange({ from_date: fromDate, to_date: e.target.value })}
-        />
-      </div>
-
-      {hasFilter && (
-        <button
-          type="button"
-          className="chat-date-range__clear"
-          onClick={handleClear}
-          title="Clear date filter"
-        >
-          <X size={13} strokeWidth={2.5} />
-          Clear
-        </button>
-      )}
-    </div>
-  );
-};
+import { Eye, Trash2, X } from 'lucide-react';
+import DateRangeFilter from '../components/DateRangeFilter';
 
 // ─── ChatLogs Page ─────────────────────────────────────────────
 const ChatLogs = () => {
