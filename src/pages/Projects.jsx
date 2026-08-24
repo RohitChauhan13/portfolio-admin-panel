@@ -15,6 +15,7 @@ const Projects = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterFeatured, setFilterFeatured] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -25,10 +26,10 @@ const Projects = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [techInput, setTechInput] = useState('');
 
-  const fetchData = useCallback(async (currentPage = page, search = searchTerm) => {
+  const fetchData = useCallback(async (currentPage = page, search = searchTerm, featured = filterFeatured) => {
     setIsLoading(true);
     try {
-      const res = await axiosClient.get(`/projects?page=${currentPage}&search=${search}`);
+      const res = await axiosClient.get(`/projects?page=${currentPage}&search=${search}&featured=${featured}`);
       setData(res.data.data);
       setTotal(res.data.total);
       setTotalPages(res.data.totalPages);
@@ -37,16 +38,22 @@ const Projects = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [page, searchTerm]);
+  }, [page, searchTerm, filterFeatured]);
 
   useEffect(() => {
-    fetchData(page, searchTerm);
-  }, [page, searchTerm, fetchData]);
+    fetchData(page, searchTerm, filterFeatured);
+  }, [page, searchTerm, filterFeatured, fetchData]);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
     setPage(1);
   };
+
+  const handleFilterFeatured = (val) => {
+    setFilterFeatured(val);
+    setPage(1);
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -149,6 +156,17 @@ const Projects = () => {
         }}
         onDelete={(item) => { setItemToDelete(item); setIsDeleteOpen(true); }}
         isLoading={isLoading}
+        filters={[
+          {
+            label: 'Featured',
+            value: filterFeatured,
+            onChange: handleFilterFeatured,
+            options: [
+              { value: 'true', label: 'Featured' },
+              { value: 'false', label: 'Not Featured' },
+            ],
+          },
+        ]}
       />
 
       <FormModal isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} title={editingId ? 'Edit Project' : 'Add Project'}>

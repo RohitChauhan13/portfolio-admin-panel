@@ -14,6 +14,7 @@ const Experience = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -24,10 +25,10 @@ const Experience = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [techInput, setTechInput] = useState('');
 
-  const fetchData = useCallback(async (currentPage = page, search = searchTerm) => {
+  const fetchData = useCallback(async (currentPage = page, search = searchTerm, status = filterStatus) => {
     setIsLoading(true);
     try {
-      const res = await axiosClient.get(`/experience?page=${currentPage}&search=${search}`);
+      const res = await axiosClient.get(`/experience?page=${currentPage}&search=${search}&is_current=${status}`);
       setData(res.data.data);
       setTotal(res.data.total);
       setTotalPages(res.data.totalPages);
@@ -36,16 +37,22 @@ const Experience = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [page, searchTerm]);
+  }, [page, searchTerm, filterStatus]);
 
   useEffect(() => {
-    fetchData(page, searchTerm);
-  }, [page, searchTerm, fetchData]);
+    fetchData(page, searchTerm, filterStatus);
+  }, [page, searchTerm, filterStatus, fetchData]);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
     setPage(1);
   };
+
+  const handleFilterStatus = (val) => {
+    setFilterStatus(val);
+    setPage(1);
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,6 +155,17 @@ const Experience = () => {
         }}
         onDelete={(item) => { setItemToDelete(item); setIsDeleteOpen(true); }}
         isLoading={isLoading}
+        filters={[
+          {
+            label: 'Status',
+            value: filterStatus,
+            onChange: handleFilterStatus,
+            options: [
+              { value: 'true', label: 'Current' },
+              { value: 'false', label: 'Past' },
+            ],
+          },
+        ]}
       />
 
       <FormModal isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} title={editingId ? 'Edit' : 'Add'}>

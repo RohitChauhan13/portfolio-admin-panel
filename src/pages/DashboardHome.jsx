@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axiosClient from '../api/axiosClient';
-import { MessageSquare, Loader, Users, Calendar, BarChart3, Bot, Star } from 'lucide-react';
+import { MessageSquare, Users, Calendar, BarChart3, Bot, Star } from 'lucide-react';
+import { InlineLoader } from '../components/Loader';
 import { Link } from 'react-router-dom';
 
 const DashboardHome = () => {
@@ -35,9 +36,7 @@ const DashboardHome = () => {
       </div>
 
       {loading ? (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
-          <Loader className="spin" size={18} /> Loading statistics...
-        </div>
+        <InlineLoader text="Loading statistics..." />
       ) : stats ? (
         <>
           <h3 style={{ marginBottom: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -115,11 +114,6 @@ const DashboardHome = () => {
       ) : (
         <div className="empty-state card">Failed to load statistics.</div>
       )}
-
-      <style>{`
-        .spin { animation: spin 1s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-      `}</style>
     </div>
   );
 };

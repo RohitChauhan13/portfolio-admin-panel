@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axiosClient from '../api/axiosClient';
 import toast from 'react-hot-toast';
 import ImagePicker from '../components/ImagePicker';
+import { PageLoader } from '../components/Loader';
 import { Mail, Phone, MapPin, Link, FileText, User, Hash } from 'lucide-react';
 
 const GithubIcon = ({ size = 18 }) => (
@@ -90,7 +91,7 @@ const Personal = () => {
     }
   };
 
-  if (isLoading) return <div className="page-container">Loading...</div>;
+  if (isLoading) return <PageLoader text="Loading personal info..." />;
 
   return (
     <div className="page-container">

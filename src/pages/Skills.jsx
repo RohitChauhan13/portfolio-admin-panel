@@ -14,6 +14,8 @@ const Skills = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
+  const [filterProficiency, setFilterProficiency] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   // Modal states
@@ -24,10 +26,12 @@ const Skills = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  const fetchData = useCallback(async (currentPage = page, search = searchTerm) => {
+  const fetchData = useCallback(async (currentPage = page, search = searchTerm, category = filterCategory, proficiency = filterProficiency) => {
     setIsLoading(true);
     try {
-      const res = await axiosClient.get(`/skills?page=${currentPage}&search=${search}`);
+      const res = await axiosClient.get(
+        `/skills?page=${currentPage}&search=${search}&category=${category}&proficiency=${proficiency}`
+      );
       setData(res.data.data);
       setTotal(res.data.total);
       setTotalPages(res.data.totalPages);
@@ -36,16 +40,27 @@ const Skills = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [page, searchTerm]);
+  }, [page, searchTerm, filterCategory, filterProficiency]);
 
   useEffect(() => {
-    fetchData(page, searchTerm);
-  }, [page, searchTerm, fetchData]);
+    fetchData(page, searchTerm, filterCategory, filterProficiency);
+  }, [page, searchTerm, filterCategory, filterProficiency, fetchData]);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
     setPage(1);
   };
+
+  const handleFilterCategory = (val) => {
+    setFilterCategory(val);
+    setPage(1);
+  };
+
+  const handleFilterProficiency = (val) => {
+    setFilterProficiency(val);
+    setPage(1);
+  };
+
 
   const openAddModal = () => {
     setFormData(emptyForm);
@@ -138,6 +153,30 @@ const Skills = () => {
         onEdit={openEditModal}
         onDelete={openDeleteModal}
         isLoading={isLoading}
+        filters={[
+          {
+            label: 'Category',
+            value: filterCategory,
+            onChange: handleFilterCategory,
+            options: [
+              { value: 'frontend', label: 'Frontend' },
+              { value: 'backend', label: 'Backend' },
+              { value: 'database', label: 'Database' },
+              { value: 'tools', label: 'Tools' },
+              { value: 'other', label: 'Other' },
+            ],
+          },
+          {
+            label: 'Proficiency',
+            value: filterProficiency,
+            onChange: handleFilterProficiency,
+            options: [
+              { value: 'Beginner', label: 'Beginner' },
+              { value: 'Intermediate', label: 'Intermediate' },
+              { value: 'Advanced', label: 'Advanced' },
+            ],
+          },
+        ]}
       />
 
       <FormModal 
@@ -172,10 +211,15 @@ const Skills = () => {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div className="form-group">
               <label className="form-label">Proficiency</label>
-              <input type="text" className="form-input" placeholder="e.g. Advanced or 90%"
-                value={formData.proficiency || ''} 
-                onChange={e => setFormData({...formData, proficiency: e.target.value})} 
-              />
+              <select className="form-input"
+                value={formData.proficiency || ''}
+                onChange={e => setFormData({...formData, proficiency: e.target.value})}
+              >
+                <option value="">-- Select --</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
             </div>
             <div className="form-group">
               <label className="form-label">Sort Order</label>

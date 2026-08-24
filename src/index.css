@@ -293,3 +293,95 @@ input, textarea, select {
   background: transparent;
   padding: 0;
 }
+/* Date Range Filter Styles */
+.chat-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.chat-date-range {
+  display: flex;
+  align-items: center;
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  padding: 0.25rem 0.5rem;
+  padding-right: 1rem;
+}
+
+.chat-date-range__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  padding: 0 0.5rem;
+}
+
+.chat-date-range__field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chat-date-range__label {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.chat-date-range__input {
+  border: none;
+  background: transparent;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  outline: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.chat-date-range__input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
+.chat-date-range__input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+.chat-date-range__sep {
+  color: var(--text-muted);
+  margin: 0 0.5rem;
+  font-size: 0.875rem;
+}
+
+.chat-date-range__clear {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: 1rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--danger-color);
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+}
+
+.chat-date-range__clear:hover {
+  background: var(--danger-color);
+  color: white;
+}
+
+.chat-filter-bar__count {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  background: var(--accent-light);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+}
